@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>KarizmaResource.Application</AssemblyName>
+        <RootNamespace>KarizmaPlatform.Resources.Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\KarizmaResource.Domain\KarizmaResource.Domain.csproj" />
+      <ProjectReference Include="..\KarizmaResource.Infrastructure\KarizmaResource.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

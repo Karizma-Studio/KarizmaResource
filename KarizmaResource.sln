@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KarizmaResource.Application", "KarizmaResource.Application\KarizmaResource.Application.csproj", "{D546E519-25BB-4A43-8554-ECE205DAA306}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KarizmaResource.Domain", "KarizmaResource.Domain\KarizmaResource.Domain.csproj", "{B50BE5E8-0369-4FA6-A48D-76F9332DCE84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KarizmaResource.Infrastructure", "KarizmaResource.Infrastructure\KarizmaResource.Infrastructure.csproj", "{CA553440-FC0E-4E4D-B82A-C6C6CCAE9050}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KarizmaResource.SharedClasses", "KarizmaResource.SharedClasses\KarizmaResource.SharedClasses.csproj", "{6DC62242-7DCD-4015-84F8-2C2D920F6EB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D546E519-25BB-4A43-8554-ECE205DAA306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D546E519-25BB-4A43-8554-ECE205DAA306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D546E519-25BB-4A43-8554-ECE205DAA306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D546E519-25BB-4A43-8554-ECE205DAA306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50BE5E8-0369-4FA6-A48D-76F9332DCE84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50BE5E8-0369-4FA6-A48D-76F9332DCE84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50BE5E8-0369-4FA6-A48D-76F9332DCE84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50BE5E8-0369-4FA6-A48D-76F9332DCE84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA553440-FC0E-4E4D-B82A-C6C6CCAE9050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA553440-FC0E-4E4D-B82A-C6C6CCAE9050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA553440-FC0E-4E4D-B82A-C6C6CCAE9050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA553440-FC0E-4E4D-B82A-C6C6CCAE9050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC62242-7DCD-4015-84F8-2C2D920F6EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC62242-7DCD-4015-84F8-2C2D920F6EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC62242-7DCD-4015-84F8-2C2D920F6EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC62242-7DCD-4015-84F8-2C2D920F6EB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
