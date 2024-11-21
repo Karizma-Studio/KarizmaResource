@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using KarizmaPlatform.Core.Domain.Models;
+using KarizmaPlatform.Core.Database;
 using KarizmaPlatform.Resources.SharedClasses.Enums;
 
 namespace KarizmaPlatform.Resources.Domain.Models;

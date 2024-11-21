@@ -7,14 +7,12 @@
         <RootNamespace>KarizmaPlatform.Resources.Domain</RootNamespace>
     </PropertyGroup>
 
-
-    <ItemGroup>
-        <PackageReference Include="PlatformCore" Version="2.0.9"/>
-    </ItemGroup>
-
-
     <ItemGroup>
       <ProjectReference Include="..\KarizmaResource.SharedClasses\KarizmaResource.SharedClasses.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="KarizmaCore" Version="1.0.0" />
     </ItemGroup>
     
 </Project>

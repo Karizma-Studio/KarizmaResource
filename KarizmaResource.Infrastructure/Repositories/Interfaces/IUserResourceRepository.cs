@@ -1,4 +1,4 @@
-﻿using KarizmaPlatform.Core.Services.Interfaces;
+﻿using KarizmaPlatform.Core.Logic;
 using KarizmaPlatform.Resources.Domain.Models;
 
 namespace KarizmaPlatform.Resources.Infrastructure.Repositories.Interfaces;

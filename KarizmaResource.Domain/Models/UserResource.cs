@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using KarizmaPlatform.Core.Domain.Models;
+using KarizmaPlatform.Core.Database;
 
 namespace KarizmaPlatform.Resources.Domain.Models;
 
