@@ -1,10 +1,11 @@
-﻿namespace KarizmaPlatform.Resources.SharedClasses.Enums;
-
-public enum ResourceType
+﻿namespace KarizmaPlatform.Resources.SharedClasses.Enums
 {
-    Numeric,
-    Timely,
-    Mixed,
-    ExpiringNumeric,
-    Collectable
+    public enum ResourceType
+    {
+        Numeric,
+        Timely,
+        Mixed,
+        ExpiringNumeric,
+        Collectable
+    }
 }

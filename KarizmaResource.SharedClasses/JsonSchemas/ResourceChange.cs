@@ -1,8 +1,10 @@
-﻿namespace KarizmaPlatform.Resources.SharedClasses.JsonSchemas
+﻿using System;
+
+namespace KarizmaPlatform.Resources.SharedClasses.JsonSchemas
 {
     public class ResourceChange
     {
-        public required string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public int? Amount { get; set; }
         public double? Duration { get; set; }
         public long? CollectableId { get; set; }

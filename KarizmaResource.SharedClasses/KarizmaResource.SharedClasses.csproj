@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <GenerateGlobalUsings>false</GenerateGlobalUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>KarizmaPlatform.Resources.SharedClasses</RootNamespace>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Title>Karizma Resource SharedClasses</Title>
         <Authors>Karizma Studio</Authors>
         <Description>Shared Classes Layer of Karizma Resource System</Description>
         <RepositoryUrl>https://github.com/Karizma-Studio/KarizmaResource</RepositoryUrl>
         <PackageTags>EFCore, Server, Clean Architecture, User Managment</PackageTags>
-        <PackageReleaseNotes>-add package description</PackageReleaseNotes>
+        <PackageReleaseNotes>-change target framwork to netstandard2.1</PackageReleaseNotes>
     </PropertyGroup>
 
 </Project>
