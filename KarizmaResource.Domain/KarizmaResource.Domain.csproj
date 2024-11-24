@@ -5,6 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>KarizmaPlatform.Resources.Domain</RootNamespace>
+        <Version>1.0.1</Version>
+        <RepositoryUrl>https://github.com/Karizma-Studio/KarizmaResource</RepositoryUrl>
+        <Title>Karizma Resource Domain</Title>
+        <Authors>Karizma Studio</Authors>
+        <Description>Domain Layer of Karizma Resource System</Description>
+        <PackageTags>EFCore, Server, Clean Architecture, User Managment</PackageTags>
+        <PackageReleaseNotes>-add package description</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>

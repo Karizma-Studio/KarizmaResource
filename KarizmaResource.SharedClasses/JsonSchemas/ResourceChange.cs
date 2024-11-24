@@ -2,7 +2,7 @@
 {
     public class ResourceChange
     {
-        public string Title { get; set; }
+        public required string Title { get; set; }
         public int? Amount { get; set; }
         public double? Duration { get; set; }
         public long? CollectableId { get; set; }
