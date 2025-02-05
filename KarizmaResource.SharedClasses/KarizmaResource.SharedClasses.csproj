@@ -14,4 +14,8 @@
         <PackageReleaseNotes>-change target framwork to netstandard2.1</PackageReleaseNotes>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Reinforced.Typings" Version="1.6.5" />
+    </ItemGroup>
+
 </Project>
