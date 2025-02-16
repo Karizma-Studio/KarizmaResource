@@ -48,6 +48,7 @@ public class ResourcesHostedService<TEnum>(
         foreach (var structure in resourceStructures.Where(structure => !resources.Any(r => r.Title.Equals(structure.Title.ToString()))))
             database.GetResources().Add(new Resource
             {
+                Id = structure.Id,
                 Title = structure.Title.ToString(),
                 Type = structure.Type,
                 Category = structure.Category
