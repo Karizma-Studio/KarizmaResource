@@ -5,13 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>KarizmaPlatform.Resources.Infrastructure</RootNamespace>
-        <Version>1.0.1</Version>
+        <Version>1.1.0</Version>
         <Title>Karizma Resource Infrastructure</Title>
         <Authors>Karizma Studio</Authors>
         <Description>Infrastructure Layer of Karizma Resource System</Description>
         <RepositoryUrl>https://github.com/Karizma-Studio/KarizmaResource</RepositoryUrl>
         <PackageTags>EFCore, Server, Clean Architecture, User Managment</PackageTags>
-        <PackageReleaseNotes>-add package description</PackageReleaseNotes>
+        <PackageReleaseNotes></PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
