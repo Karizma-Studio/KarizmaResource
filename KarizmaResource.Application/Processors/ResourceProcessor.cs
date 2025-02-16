@@ -12,9 +12,16 @@ public class ResourceProcessor<T>(
     IUserResourceRepository userResourceRepository,
     ResourceCache<T> resourceCache) : IResourceProcessor<T> where T : struct, Enum
 {
+    public event EventHandler<ResourceChangedEventArgs> ResourceChanged;
+
     public Resource GetResource(T resourceLabel)
     {
         return resourceCache.GetResource(resourceLabel);
+    }
+
+    protected virtual void OnResourceChanged(ResourceChangedEventArgs e)
+    {
+        ResourceChanged?.Invoke(this, e);
     }
 
     public async Task<bool> CanChange(long userId, ResourceChange change)
@@ -42,7 +49,14 @@ public class ResourceProcessor<T>(
         try
         {
             var resource = resourceCache.GetResource(change.GetResourceEnum<T>());
+
             ArgumentNullException.ThrowIfNull(resource, "resource != null");
+
+            if (resource.Type == ResourceType.Custom)
+            {
+                OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
+                return true;
+            }
 
             if (ResourceType.Collectable.Equals(resource.Type))
             {
@@ -67,11 +81,13 @@ public class ResourceProcessor<T>(
                     await UpdateUserResource(userResources, change);
             }
 
+            OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
             return true;
         }
         catch (Exception e)
         {
             Console.WriteLine($"AddTransaction Error, userId: {userId}, change: {JsonSerializer.Serialize(change)} --- {e.StackTrace}");
+            OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
             return false;
         }
     }
@@ -212,6 +228,8 @@ public class ResourceProcessor<T>(
                     await userResourceRepository.Update(updatedResource);
                 else
                     await userResourceRepository.DeleteById(updatedResource.Id);
+
+            OnResourceChanged(new ResourceChangedEventArgs { UserId = userResources[0].UserId, ResourceChange = change });
         }
         else
         {
