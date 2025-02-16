@@ -6,6 +6,7 @@
         Timely,
         Mixed,
         ExpiringNumeric,
-        Collectable
+        Collectable,
+        Custom
     }
 }
