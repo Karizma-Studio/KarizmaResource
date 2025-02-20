@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>KarizmaResource.Application</AssemblyName>
         <RootNamespace>KarizmaPlatform.Resources.Application</RootNamespace>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <Title>Karizma Resource Application</Title>
         <Authors>Karizma Studio</Authors>
         <Description>Application Layer of Karizma Resource System</Description>

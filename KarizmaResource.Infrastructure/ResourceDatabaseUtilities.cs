@@ -1,6 +1,7 @@
 ﻿using KarizmaPlatform.Resources.Domain.Models;
 using KarizmaPlatform.Resources.SharedClasses.Enums;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace KarizmaPlatform.Resources.Infrastructure;
 
@@ -8,6 +9,8 @@ public class ResourceDatabaseUtilities
 {
     public static void ConfigureDatabase<T>(ModelBuilder modelBuilder) where T : class, IResourceUser
     {
+        modelBuilder.HasPostgresEnum<ResourceType>();
+        
         modelBuilder.Entity<UserResource>()
             .HasOne<T>()
             .WithMany()
@@ -24,12 +27,8 @@ public class ResourceDatabaseUtilities
         modelBuilder.Entity<Resource>()
             .HasIndex(r => r.Title)
             .IsUnique();
-
-        modelBuilder.Entity<Resource>()
-            .ToTable(r =>
-                r.HasCheckConstraint("CK_Resource_Type",
-                    $"(type) IN ({string.Join(",", Enum.GetNames(typeof(ResourceType)).Select(name => $"'{name}'"))})"));
-
+        
+        
         modelBuilder.Entity<UserResource>()
             .HasIndex(x => new { x.UserId })
             .HasFilter("deleted_at IS NULL");
@@ -57,5 +56,10 @@ public class ResourceDatabaseUtilities
         modelBuilder.Entity<UserResource>()
             .Property(b => b.UpdatedDate)
             .HasDefaultValueSql("now()");
+    }
+    
+    public static void MapEnums(NpgsqlDataSourceBuilder dataSourceBuilder)
+    {
+        dataSourceBuilder.MapEnum<ResourceType>("resource_type");
     }
 }
