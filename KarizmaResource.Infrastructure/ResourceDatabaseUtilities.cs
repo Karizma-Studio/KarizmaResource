@@ -48,6 +48,10 @@ public class ResourceDatabaseUtilities
         modelBuilder.Entity<Resource>()
             .Property(b => b.UpdatedDate)
             .HasDefaultValueSql("now()");
+        
+        modelBuilder.Entity<Resource>()
+            .Property(b => b.Type)
+            .HasColumnType("resource_type");
 
         modelBuilder.Entity<UserResource>()
             .Property(b => b.CreatedDate)
