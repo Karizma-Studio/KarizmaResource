@@ -20,11 +20,6 @@ public class ResourceDatabaseUtilities
         modelBuilder.Entity<UserResource>().Ignore(ur => ur.User);
 
         modelBuilder.Entity<Resource>()
-            .Property(r => r.Type)
-            .HasConversion<string>()
-            .HasMaxLength(20);
-
-        modelBuilder.Entity<Resource>()
             .HasIndex(r => r.Title)
             .IsUnique();
         
