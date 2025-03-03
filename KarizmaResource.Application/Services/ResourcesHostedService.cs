@@ -23,6 +23,11 @@ public class ResourcesHostedService<TEnum>(
         return Task.CompletedTask;
     }
 
+    public async Task ReloadCache()
+    {
+        await FillResourceCache();
+    }
+
     private async Task FillResourceCache()
     {
         using var scope = scopeFactory.CreateScope();

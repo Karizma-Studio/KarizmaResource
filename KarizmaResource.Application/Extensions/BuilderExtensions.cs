@@ -19,7 +19,8 @@ public static class BuilderExtensions
             .AddScoped<IResourceProcessor<TEnum>, ResourceProcessor<TEnum>>()
             .AddSingleton<ResourceCache<TEnum>>()
             .AddScoped<IResourceDatabase>(provider => provider.GetRequiredService<TDatabase>())
-            .AddHostedService<ResourcesHostedService<TEnum>>()
+            .AddSingleton<ResourcesHostedService<TEnum>>()
+            .AddHostedService(provider => provider.GetRequiredService<ResourcesHostedService<TEnum>>())
             .AddSingleton(resourceStructures);
 
         return services;
