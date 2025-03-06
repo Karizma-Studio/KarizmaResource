@@ -17,6 +17,7 @@ public static class BuilderExtensions
             .AddScoped<IResourceRepository, ResourceRepository>()
             .AddScoped<IUserResourceRepository, UserResourceRepository>()
             .AddScoped<IResourceProcessor<TEnum>, ResourceProcessor<TEnum>>()
+            .AddSingleton<ResourceEventManager>()
             .AddSingleton<ResourceCache<TEnum>>()
             .AddScoped<IResourceDatabase>(provider => provider.GetRequiredService<TDatabase>())
             .AddSingleton<ResourcesHostedService<TEnum>>()
