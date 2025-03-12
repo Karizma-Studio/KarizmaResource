@@ -34,8 +34,8 @@ public class ResourceProcessor<T>(
             .Select(g => new ResourceChange
             {
                 Title = g.Key.Title,
-                Duration = g.Key.Duration,
-                CollectableId = g.Key.CollectableId,
+                Duration = g.Key.Duration == -1 ? null : g.Key.Duration,
+                CollectableId = g.Key.CollectableId == -1 ? null : g.Key.CollectableId,
                 Amount = g.Sum(rc => rc.Amount)
             })
             .ToList();
