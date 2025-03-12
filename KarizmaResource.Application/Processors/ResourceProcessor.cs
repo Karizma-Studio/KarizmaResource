@@ -30,7 +30,7 @@ public class ResourceProcessor<T>(
     public async Task<bool> AddTransaction(long userId, List<ResourceChange> resourceChanges)
     {
         var groupedChanges = resourceChanges
-            .GroupBy(rc => new { rc.Title, rc.Duration, rc.CollectableId })
+            .GroupBy(rc => new { rc.Title, Duration = rc.Duration ?? -1, CollectableId = rc.CollectableId ?? -1 })
             .Select(g => new ResourceChange
             {
                 Title = g.Key.Title,
