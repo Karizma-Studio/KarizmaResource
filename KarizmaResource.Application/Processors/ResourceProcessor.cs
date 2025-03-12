@@ -29,7 +29,18 @@ public class ResourceProcessor<T>(
 
     public async Task<bool> AddTransaction(long userId, List<ResourceChange> resourceChanges)
     {
-        foreach (var resourceChange in resourceChanges)
+        var groupedChanges = resourceChanges
+            .GroupBy(rc => new { rc.Title, rc.Duration, rc.CollectableId })
+            .Select(g => new ResourceChange
+            {
+                Title = g.Key.Title,
+                Duration = g.Key.Duration,
+                CollectableId = g.Key.CollectableId,
+                Amount = g.Sum(rc => rc.Amount)
+            })
+            .ToList();
+        
+        foreach (var resourceChange in groupedChanges)
         {
             var result = await AddTransaction(userId, resourceChange);
             if (!result)
