@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>KarizmaPlatform.Resources.Infrastructure</RootNamespace>
-        <Version>1.2.4</Version>
+        <Version>1.3.0</Version>
         <Title>Karizma Resource Infrastructure</Title>
         <Authors>Karizma Studio</Authors>
         <Description>Infrastructure Layer of Karizma Resource System</Description>
