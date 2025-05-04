@@ -3,6 +3,7 @@ using KarizmaPlatform.Resources.Application.Processors.Interfaces;
 using KarizmaPlatform.Resources.Application.Services;
 using KarizmaPlatform.Resources.Domain.Models;
 using KarizmaPlatform.Resources.Infrastructure.Repositories.Interfaces;
+using KarizmaPlatform.Resources.SharedClasses.Dtos;
 using KarizmaPlatform.Resources.SharedClasses.Enums;
 using KarizmaPlatform.Resources.SharedClasses.JsonSchemas;
 
@@ -13,7 +14,6 @@ public class ResourceProcessor<T>(
     ResourceCache<T> resourceCache,
     ResourceEventManager resourceEventManager) : IResourceProcessor<T> where T : struct, Enum
 {
-
     public Resource GetResource(T resourceLabel)
     {
         return resourceCache.GetResource(resourceLabel);
@@ -27,22 +27,33 @@ public class ResourceProcessor<T>(
         return CanChange(userResources, change);
     }
 
-    public async Task<bool> AddTransaction(long userId, List<ResourceChange> resourceChanges)
+    public async Task<bool> AddTransaction(long userId, List<ResourceChange> resourceChanges, ResourceChangeInfo changeInfo)
     {
-        var groupedChanges = resourceChanges
-            .GroupBy(rc => new { rc.Title, Duration = rc.Duration ?? -1, CollectableId = rc.CollectableId ?? -1 })
-            .Select(g => new ResourceChange
-            {
-                Title = g.Key.Title,
-                Duration = g.Key.Duration == -1 ? null : g.Key.Duration,
-                CollectableId = g.Key.CollectableId == -1 ? null : g.Key.CollectableId,
-                Amount = g.Sum(rc => rc.Amount)
-            })
+        var mergedResourceChanges = resourceChanges
+            .Where(rc => rc.CollectableId != null)
             .ToList();
-        
-        foreach (var resourceChange in groupedChanges)
+
+        var grouped = resourceChanges
+            .Where(rc => rc.CollectableId == null)
+            .GroupBy(rc => rc.Title)
+            .Select(g =>
+            {
+                var hasNullAmount = g.Any(rc => rc.Amount == null);
+                var hasNullDuration = g.Any(rc => rc.Duration == null);
+                return new ResourceChange
+                {
+                    Title = g.Key,
+                    Amount = hasNullAmount ? null : g.Sum(rc => rc.Amount),
+                    Duration = hasNullDuration ? null : g.Sum(rc => rc.Duration),
+                    CollectableId = null
+                };
+            });
+
+        mergedResourceChanges = mergedResourceChanges.Concat(grouped).ToList();
+
+        foreach (var resourceChange in mergedResourceChanges)
         {
-            var result = await AddTransaction(userId, resourceChange);
+            var result = await AddTransaction(userId, resourceChange, changeInfo);
             if (!result)
                 return false;
         }
@@ -50,7 +61,7 @@ public class ResourceProcessor<T>(
         return true;
     }
 
-    private async Task<bool> AddTransaction(long userId, ResourceChange change)
+    private async Task<bool> AddTransaction(long userId, ResourceChange change, ResourceChangeInfo changeInfo)
     {
         try
         {
@@ -70,9 +81,9 @@ public class ResourceProcessor<T>(
                 var userCollectable = await userResourceRepository.FindUserCollectable(userId, resource.Id, change.CollectableId.Value);
 
                 if (userCollectable is null)
-                    await CreateNewUserResource(userId, change);
+                    await CreateNewUserResource(userId, change, changeInfo);
                 else
-                    await UpdateUserResource([userCollectable], change);
+                    await UpdateUserResource([userCollectable], change, changeInfo);
             }
             else
             {
@@ -82,9 +93,9 @@ public class ResourceProcessor<T>(
                     return false;
 
                 if (userResources.Count == 0 || (ResourceType.ExpiringNumeric.Equals(resource.Type) && change.Amount > 0))
-                    await CreateNewUserResource(userId, change);
+                    await CreateNewUserResource(userId, change, changeInfo);
                 else
-                    await UpdateUserResource(userResources, change);
+                    await UpdateUserResource(userResources, change, changeInfo);
             }
 
             resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
@@ -93,7 +104,6 @@ public class ResourceProcessor<T>(
         catch (Exception e)
         {
             Console.WriteLine($"AddTransaction Error, userId: {userId}, change: {JsonSerializer.Serialize(change)} --- {e.StackTrace}");
-            resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
             return false;
         }
     }
@@ -109,7 +119,7 @@ public class ResourceProcessor<T>(
         { ResourceType.Collectable, CreateCollectable }
     };
 
-    private async Task CreateNewUserResource(long userId, ResourceChange change)
+    private async Task CreateNewUserResource(long userId, ResourceChange change, ResourceChangeInfo changeInfo)
     {
         if (change.Amount < 0 || change.Duration < 0) throw new ArgumentException("Create negative values not available");
 
@@ -117,7 +127,18 @@ public class ResourceProcessor<T>(
         ArgumentNullException.ThrowIfNull(resource, "Resource object cant be null");
 
         if (resourceCreators.TryGetValue(resource.Type, out var creator))
-            await userResourceRepository.Add(creator(userId, resource, change));
+        {
+            var userResource = await userResourceRepository.Add(creator(userId, resource, change));
+            resourceEventManager.OnResourceLogged(new ResourceLogEventArgs
+            {
+                UserId = userId,
+                ResourceChange = change,
+                Purpose = changeInfo.Purpose,
+                Meta = changeInfo.Meta,
+                CreatedTime = DateTimeOffset.UtcNow,
+                Balance = JsonDocument.Parse(JsonSerializer.Serialize(userResource))
+            });
+        }
         else
             throw new ArgumentException($"Resource creator for type '{resource.Type}' not found.");
     }
@@ -218,7 +239,7 @@ public class ResourceProcessor<T>(
         { ResourceType.Collectable, UpdateCollectable }
     };
 
-    private async Task UpdateUserResource(List<UserResource> userResources, ResourceChange change)
+    private async Task UpdateUserResource(List<UserResource> userResources, ResourceChange change, ResourceChangeInfo changeInfo)
     {
         if (!CanChange(userResources, change))
             throw new ArgumentException("Cant Change Resource With this resource change");
@@ -235,7 +256,15 @@ public class ResourceProcessor<T>(
                 else
                     await userResourceRepository.DeleteById(updatedResource.Id);
 
-            resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs { UserId = userResources[0].UserId, ResourceChange = change });
+            resourceEventManager.OnResourceLogged(new ResourceLogEventArgs
+            {
+                UserId = userResources[0].UserId,
+                ResourceChange = change,
+                Purpose = changeInfo.Purpose,
+                Meta = changeInfo.Meta,
+                CreatedTime = DateTimeOffset.UtcNow,
+                Balance = JsonDocument.Parse(JsonSerializer.Serialize(userResources))
+            });
         }
         else
         {
