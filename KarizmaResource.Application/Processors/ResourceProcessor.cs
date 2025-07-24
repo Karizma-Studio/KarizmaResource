@@ -71,7 +71,7 @@ public class ResourceProcessor<T>(
 
             if (resource.Type == ResourceType.Custom)
             {
-                resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
+                resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs { ResourceChangeInfo =changeInfo, UserId = userId, ResourceChange = change });
                 return true;
             }
 
@@ -98,7 +98,7 @@ public class ResourceProcessor<T>(
                     await UpdateUserResource(userResources, change, changeInfo);
             }
 
-            resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs { UserId = userId, ResourceChange = change });
+            resourceEventManager.OnResourceChanged(new ResourceChangedEventArgs {ResourceChangeInfo =changeInfo, UserId = userId, ResourceChange = change });
             return true;
         }
         catch (Exception e)

@@ -7,5 +7,6 @@ namespace KarizmaPlatform.Resources.SharedClasses.Dtos
     {
         public long UserId { get; set; }
         public ResourceChange ResourceChange { get; set; }
+        public ResourceChangeInfo ResourceChangeInfo { get; set; }
     }
 }
