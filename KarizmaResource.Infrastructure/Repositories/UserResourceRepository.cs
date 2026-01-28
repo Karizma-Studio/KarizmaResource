@@ -45,7 +45,8 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
 
     public Task<UserResource?> FindNotDeletedById(long identifier)
     {
-        return resourceDatabase.GetUserResources().SingleOrDefaultAsync((x => x.DeletedDate == new DateTimeOffset?() && x.Id == identifier));
+        return resourceDatabase.GetUserResources()
+            .SingleOrDefaultAsync((x => x.DeletedDate == null && x.Id == identifier));
     }
 
     public Task<List<UserResource>> GetAll()
@@ -55,7 +56,7 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
 
     public Task<List<UserResource>> GetAllNotDeleted()
     {
-        return resourceDatabase.GetUserResources().Where(x => x.DeletedDate == new DateTimeOffset?()).ToListAsync();
+        return resourceDatabase.GetUserResources().Where(x => x.DeletedDate == null).ToListAsync();
     }
 
     public Task<List<UserResource>> FindUserResources(long userId, bool tracking)
@@ -64,7 +65,7 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
                 ? resourceDatabase.GetUserResources()
                 : resourceDatabase.GetUserResources().AsNoTracking())
             .Include(ur => ur.Resource)
-            .Where(ur => ur.UserId == userId)
+            .Where(ur => ur.DeletedDate == null && ur.UserId == userId)
             .ToListAsync();
     }
 
@@ -74,17 +75,20 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
                 ? resourceDatabase.GetUserResources()
                 : resourceDatabase.GetUserResources().AsNoTracking())
             .Include(ur => ur.Resource)
-            .Where(ur => ur.UserId == userId && ur.ResourceId == resourceId)
+            .Where(ur => ur.DeletedDate == null && ur.UserId == userId && ur.ResourceId == resourceId)
             .OrderBy(ur => ur.ExpireDate)
             .ToListAsync();
     }
 
-    public Task<UserResource?> FindUserCollectable(long userId, long resourceId, long collectableId, bool tracking = true)
+    public Task<UserResource?> FindUserCollectable(long userId, long resourceId, long collectableId,
+        bool tracking = true)
     {
         return (tracking
                 ? resourceDatabase.GetUserResources()
                 : resourceDatabase.GetUserResources().AsNoTracking())
             .Include(ur => ur.Resource)
-            .SingleOrDefaultAsync(ur => ur.UserId == userId && ur.ResourceId == resourceId && ur.CollectableId == collectableId);
+            .SingleOrDefaultAsync(ur =>
+                ur.DeletedDate == null && ur.UserId == userId && ur.ResourceId == resourceId &&
+                ur.CollectableId == collectableId);
     }
 }
