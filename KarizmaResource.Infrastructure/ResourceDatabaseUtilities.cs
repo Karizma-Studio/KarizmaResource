@@ -29,12 +29,18 @@ public class ResourceDatabaseUtilities
             .HasFilter("deleted_at IS NULL");
 
         modelBuilder.Entity<UserResource>()
+            .HasIndex(x => x.UserId);
+
+        modelBuilder.Entity<UserResource>()
             .HasIndex(x => new { x.UserId, x.ResourceId })
             .HasFilter("deleted_at IS NULL");
 
         modelBuilder.Entity<UserResource>()
             .HasIndex(x => new { x.UserId, x.ResourceId, x.ExpireDate })
             .HasFilter("deleted_at IS NULL");
+
+        modelBuilder.Entity<UserResource>()
+            .HasIndex(x => new { x.UserId, x.ResourceId, x.ExpireDate });
 
         modelBuilder.Entity<UserResource>()
             .HasIndex(x => new { x.UserId, x.ResourceId, x.CollectableId })
