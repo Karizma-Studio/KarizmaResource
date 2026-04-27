@@ -11,6 +11,8 @@ public class ResourceConfiguration : IEntityTypeConfiguration<Resource>
         builder.HasIndex(r => r.Title)
             .IsUnique();
 
+        builder.HasIndex(r => r.Type);
+
         builder.Property(b => b.CreatedDate)
             .HasDefaultValueSql("now()");
 
