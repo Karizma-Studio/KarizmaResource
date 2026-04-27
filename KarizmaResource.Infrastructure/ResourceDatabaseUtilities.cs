@@ -1,4 +1,4 @@
-﻿using KarizmaPlatform.Resources.Domain.Models;
+using KarizmaPlatform.Resources.Domain.Models;
 using KarizmaPlatform.Resources.SharedClasses.Enums;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -33,8 +33,15 @@ public class ResourceDatabaseUtilities
             .HasFilter("deleted_at IS NULL");
 
         modelBuilder.Entity<UserResource>()
+            .HasIndex(x => new { x.UserId, x.ResourceId, x.ExpireDate })
+            .HasFilter("deleted_at IS NULL");
+
+        modelBuilder.Entity<UserResource>()
             .HasIndex(x => new { x.UserId, x.ResourceId, x.CollectableId })
             .HasFilter("(collectable_id IS NOT NULL) AND (deleted_at IS NULL)");
+
+        modelBuilder.Entity<UserResource>()
+            .HasIndex(x => x.ResourceId);
 
         modelBuilder.Entity<Resource>()
             .Property(b => b.CreatedDate)
