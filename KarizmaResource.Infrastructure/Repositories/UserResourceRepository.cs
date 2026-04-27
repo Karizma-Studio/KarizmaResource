@@ -64,7 +64,6 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
         return (tracking
                 ? resourceDatabase.GetUserResources()
                 : resourceDatabase.GetUserResources().AsNoTracking())
-            .Include(ur => ur.Resource)
             .Where(ur => ur.DeletedDate == null && ur.UserId == userId)
             .ToListAsync();
     }
@@ -74,7 +73,6 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
         return (tracking
                 ? resourceDatabase.GetUserResources()
                 : resourceDatabase.GetUserResources().AsNoTracking())
-            .Include(ur => ur.Resource)
             .Where(ur => ur.DeletedDate == null && ur.UserId == userId && ur.ResourceId == resourceId)
             .OrderBy(ur => ur.ExpireDate)
             .ToListAsync();
@@ -86,7 +84,6 @@ public class UserResourceRepository(IResourceDatabase resourceDatabase) : IUserR
         return (tracking
                 ? resourceDatabase.GetUserResources()
                 : resourceDatabase.GetUserResources().AsNoTracking())
-            .Include(ur => ur.Resource)
             .SingleOrDefaultAsync(ur =>
                 ur.DeletedDate == null && ur.UserId == userId && ur.ResourceId == resourceId &&
                 ur.CollectableId == collectableId);
