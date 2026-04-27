@@ -11,15 +11,11 @@ public class UserResourceConfiguration : IEntityTypeConfiguration<UserResource>
         builder.HasIndex(x => new { x.UserId })
             .HasFilter("deleted_at IS NULL");
 
-        builder.HasIndex(x => x.UserId);
-
         builder.HasIndex(x => new { x.UserId, x.ResourceId })
             .HasFilter("deleted_at IS NULL");
 
         builder.HasIndex(x => new { x.UserId, x.ResourceId, x.ExpireDate })
             .HasFilter("deleted_at IS NULL");
-
-        builder.HasIndex(x => new { x.UserId, x.ResourceId, x.ExpireDate });
 
         builder.HasIndex(x => new { x.UserId, x.ResourceId, x.CollectableId })
             .HasFilter("(collectable_id IS NOT NULL) AND (deleted_at IS NULL)");
